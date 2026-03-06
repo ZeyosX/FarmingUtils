@@ -1,0 +1,11 @@
+name: FarmingUtils
+version: '1.0-SNAPSHOT'
+main: com.iseids.farmingUtils.FarmingUtils
+api-version: '1.21'
+authors: [ Zeyos ]
+website: https://github.com/ZeyosX
+commands:
+  farmingutils:
+    description: Show help for FarmingUtils features
+    usage: /<command> help
+    aliases: [fu]
