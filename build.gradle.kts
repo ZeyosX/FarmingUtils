@@ -17,6 +17,9 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.11-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.111.0")
 }
 
 tasks {
@@ -35,6 +38,10 @@ kotlin {
 
 tasks.build {
     dependsOn("shadowJar")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.processResources {

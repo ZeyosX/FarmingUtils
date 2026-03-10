@@ -48,6 +48,71 @@ class CustomFoodManager(plugin: Plugin) : Listener {
                 foodPoints = 6,
                 customName = "Msa7ab Italy Sandwich",
             ),
+            CustomRecipe(
+                id = "farmer_salad",
+                result = createCustomFoodItem(
+                    id = "farmer_salad",
+                    material = Material.BEETROOT_SOUP,
+                    name = "Farmer Salad",
+                    lore = listOf("A fresh bowl packed with garden vegetables."),
+                ),
+                ingredients = mapOf(
+                    Material.BEETROOT to 2,
+                    Material.CARROT to 1,
+                    Material.BAKED_POTATO to 1,
+                ),
+                foodPoints = 7,
+                customName = "Farmer Salad",
+            ),
+            CustomRecipe(
+                id = "honey_glazed_chicken",
+                result = createCustomFoodItem(
+                    id = "honey_glazed_chicken",
+                    material = Material.COOKED_CHICKEN,
+                    name = "Honey Glazed Chicken",
+                    lore = listOf("Sweet and savory roasted chicken."),
+                ),
+                ingredients = mapOf(
+                    Material.COOKED_CHICKEN to 1,
+                    Material.HONEY_BOTTLE to 1,
+                ),
+                foodPoints = 8,
+                customName = "Honey Glazed Chicken",
+            ),
+            CustomRecipe(
+                id = "hearty_stew",
+                result = createCustomFoodItem(
+                    id = "hearty_stew",
+                    material = Material.RABBIT_STEW,
+                    name = "Hearty Stew",
+                    lore = listOf("A dense stew for long workdays in the fields."),
+                ),
+                ingredients = mapOf(
+                    Material.COOKED_BEEF to 1,
+                    Material.CARROT to 1,
+                    Material.BAKED_POTATO to 1,
+                    Material.BOWL to 1,
+                ),
+                foodPoints = 10,
+                customName = "Hearty Stew",
+            ),
+            CustomRecipe(
+                id = "berry_tart",
+                result = createCustomFoodItem(
+                    id = "berry_tart",
+                    material = Material.SWEET_BERRIES,
+                    name = "Berry Tart",
+                    lore = listOf("A bright dessert with a crisp crust."),
+                ),
+                ingredients = mapOf(
+                    Material.SWEET_BERRIES to 3,
+                    Material.WHEAT to 2,
+                    Material.SUGAR to 1,
+                    Material.EGG to 1,
+                ),
+                foodPoints = 5,
+                customName = "Berry Tart",
+            ),
         )
 
         customRecipes = recipes
@@ -65,6 +130,10 @@ class CustomFoodManager(plugin: Plugin) : Listener {
 
     fun getRecipeByName(name: String): CustomRecipe? {
         return recipesByName[name.lowercase()]
+    }
+
+    fun getRecipeById(id: String): CustomRecipe? {
+        return recipesById[id]
     }
 
     fun getRecipes(): List<CustomRecipe> {

@@ -22,7 +22,10 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.WeakHashMap
 
-class CustomCraftingStation(private val plugin: JavaPlugin) : Listener {
+class CustomCraftingStation(
+    private val plugin: JavaPlugin,
+    private val customFoodManager: CustomFoodManager,
+) : Listener {
     init {
         addCustomBlockRecipe()
     }
@@ -85,49 +88,49 @@ class CustomCraftingStation(private val plugin: JavaPlugin) : Listener {
         player.openInventory(createCraftingInventory())
     }
 
+    private fun createCraftingInventory(): Inventory {
+        val recipes = customFoodManager.getRecipes()
+        val inventorySize = ((recipes.size + 8) / 9).coerceAtLeast(1) * 9
+        val inventory = Bukkit.createInventory(null, inventorySize, CRAFTING_MENU_TITLE)
+
+        recipes.forEachIndexed { index, recipe ->
+            inventory.setItem(index, createMenuItem(recipe))
+        }
+
+        return inventory
+    }
+
+    private fun createMenuItem(recipe: CustomRecipe): ItemStack {
+        val item = recipe.result.clone()
+        val meta = item.itemMeta ?: return item
+        meta.lore = buildList {
+            add("${INFO_PREFIX}Ingredients:")
+            recipe.ingredients.entries
+                .sortedBy { it.key.name }
+                .forEach { (material, amount) ->
+                    add("${INFO_PREFIX}- ${formatMaterialName(material)} x$amount")
+                }
+            add("${INFO_PREFIX}Restores ${recipe.foodPoints} hunger")
+            add("${INFO_PREFIX}Click to craft")
+        }
+        item.itemMeta = meta
+        return item
+    }
+
+    private fun formatMaterialName(material: Material): String {
+        return material.name
+            .lowercase()
+            .split('_')
+            .joinToString(" ") { it.replaceFirstChar(Char::uppercaseChar) }
+    }
+
     companion object {
         const val CRAFTING_MENU_TITLE: String = "Custom Crafting"
-        const val RESULT_SLOT: Int = 8
 
         private const val STATION_MARKER_KEY = "custom_crafting_station_key"
         private const val STATION_MARKER_VALUE = "unique_id_1234"
         private const val INFO_PREFIX = "\u00A77"
         private val KEY_CACHE: MutableMap<Plugin, NamespacedKey> = WeakHashMap()
-
-        private val BEEF_ICON: ItemStack by lazy {
-            ItemStack(Material.BEEF).apply {
-                itemMeta = itemMeta?.apply {
-                    setDisplayName("${INFO_PREFIX}Ingredient: Beef")
-                }
-            }
-        }
-
-        private val POTATO_ICON: ItemStack by lazy {
-            ItemStack(Material.BAKED_POTATO).apply {
-                itemMeta = itemMeta?.apply {
-                    setDisplayName("${INFO_PREFIX}Ingredient: Baked Potato")
-                }
-            }
-        }
-
-        private val CRAFT_BUTTON: ItemStack by lazy {
-            ItemStack(Material.COOKED_BEEF).apply {
-                itemMeta = itemMeta?.apply {
-                    setDisplayName("Craft Steak and Chips")
-                    lore = listOf(
-                        "${INFO_PREFIX}Consumes ingredients from your inventory.",
-                    )
-                }
-            }
-        }
-
-        fun createCraftingInventory(): Inventory {
-            val inventory = Bukkit.createInventory(null, 9, CRAFTING_MENU_TITLE)
-            inventory.setItem(0, BEEF_ICON.clone())
-            inventory.setItem(1, POTATO_ICON.clone())
-            inventory.setItem(RESULT_SLOT, CRAFT_BUTTON.clone())
-            return inventory
-        }
 
         fun isCustomCraftingStation(block: Block?, plugin: Plugin): Boolean {
             if (block == null || block.type != Material.PLAYER_HEAD) {

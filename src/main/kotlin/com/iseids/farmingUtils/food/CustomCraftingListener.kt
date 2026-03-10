@@ -17,11 +17,8 @@ class CustomCraftingListener(private val customFoodManager: CustomFoodManager) :
         }
 
         event.isCancelled = true
-        if (event.rawSlot != CustomCraftingStation.RESULT_SLOT) {
-            return
-        }
-
-        val recipe = customFoodManager.getRecipeByName("Steak and Chips") ?: return
+        val clickedItem = event.currentItem ?: return
+        val recipe = customFoodManager.getRecipeByItem(clickedItem) ?: return
         if (!hasIngredients(player.inventory, recipe.ingredients)) {
             player.sendMessage("You do not have the required ingredients.")
             return
