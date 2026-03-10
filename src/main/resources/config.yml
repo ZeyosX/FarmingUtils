@@ -1,7 +1,7 @@
 vein-mining:
   enabled: true
   require-sneaking: true
-  max-blocks: 2048
+  max-blocks: 30
   materials:
     - SUGAR_CANE
     - BAMBOO
