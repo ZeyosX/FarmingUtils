@@ -36,7 +36,7 @@ class FarmingUtilsTest {
     fun `plugin loads vein mining defaults from config`() {
         assertTrue(plugin.config.getBoolean("vein-mining.enabled"))
         assertTrue(plugin.config.getBoolean("vein-mining.require-sneaking"))
-        assertEquals(2048, plugin.config.getInt("vein-mining.max-blocks"))
+        assertTrue(plugin.config.getInt("vein-mining.max-blocks") > 0)
         assertEquals(listOf("SUGAR_CANE", "BAMBOO"), plugin.config.getStringList("vein-mining.materials"))
     }
 

@@ -11,7 +11,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
 
-class FarmingUtils : JavaPlugin() {
+open class FarmingUtils : JavaPlugin() {
     private lateinit var cropInteraction: CropInteraction
     private lateinit var customFoodManager: CustomFoodManager
 
