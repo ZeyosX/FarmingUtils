@@ -2,6 +2,8 @@ package com.iseids.farmingUtils.food
 
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
+import org.bukkit.Registry
 import org.bukkit.Sound
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
@@ -138,7 +140,7 @@ object CookpotSettingsLoader {
     private fun loadSound(section: ConfigurationSection, path: String): SoundEffect {
         val soundSection = requireSection(section, path)
         return SoundEffect(
-            sound = Sound.valueOf(requireString(soundSection, "sound")),
+            sound = parseSound(requireString(soundSection, "sound"), "${soundSection.currentPath}.sound"),
             volume = soundSection.getDouble("volume", 1.0).toFloat(),
             pitch = soundSection.getDouble("pitch", 1.0).toFloat(),
         )
@@ -163,6 +165,15 @@ object CookpotSettingsLoader {
                     error("Invalid material '$it' at $path")
                 }
             }
+    }
+
+    private fun parseSound(value: String, path: String): Sound {
+        Registry.SOUNDS.match(value)?.let { return it }
+
+        val normalizedKey = value.lowercase().replace('_', '.')
+        Registry.SOUNDS.get(NamespacedKey.minecraft(normalizedKey))?.let { return it }
+
+        error("Invalid sound '$value' at $path")
     }
 
     private fun colorize(input: String): String {

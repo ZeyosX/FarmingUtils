@@ -43,7 +43,7 @@ fun Material.getSeedMaterial(): Material {
 
 fun ItemStack.decreaseDurability(player: Player, amount: Int = 1) {
     val damageableMeta = itemMeta as? Damageable ?: return
-    damageableMeta.damage = damageableMeta.damage + amount
+    damageableMeta.damage += amount
     itemMeta = damageableMeta
 
     if (damageableMeta.damage >= type.maxDurability) {

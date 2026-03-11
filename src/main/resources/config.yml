@@ -27,7 +27,7 @@ cookpot:
         S: SUGAR
   sounds:
     station-place:
-      sound: BLOCK_DECORATED_POT_PLACE
+      sound: BLOCK_STONE_PLACE
       volume: 1.0
       pitch: 1.15
     menu-open:

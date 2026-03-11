@@ -10,6 +10,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
+import java.util.EnumMap
 import kotlin.math.min
 
 object CropHarvester {
@@ -25,7 +26,7 @@ object CropHarvester {
         val baseZ = baseBlock.z
 
         val availableSeeds: MutableMap<Material, Int> = countAvailableSeeds(player.inventory)
-        val consumedSeeds: MutableMap<Material, Int> = HashMap()
+        val consumedSeeds: MutableMap<Material, Int> = EnumMap(Material::class.java)
         var harvestedCount = 0
 
         for (x in -radius..radius) {
@@ -58,7 +59,7 @@ object CropHarvester {
     }
 
     private fun countAvailableSeeds(inventory: PlayerInventory): MutableMap<Material, Int> {
-        val counts: MutableMap<Material, Int> = HashMap()
+        val counts: MutableMap<Material, Int> = EnumMap(Material::class.java)
         for (item in inventory.storageContents) {
             val stack = item ?: continue
             counts[stack.type] = counts.getOrDefault(stack.type, 0) + stack.amount

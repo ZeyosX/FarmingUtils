@@ -58,6 +58,7 @@ class FarmingUtilsTest {
         player.assertSaid("§7- Supports vanilla and copper hoes/axes when available on your server version")
         player.assertSaid("§7- Adds a custom Crafting Station (Cookpot) with ingredient-based crafting")
         player.assertSaid("§7- Custom foods restore extra hunger when consumed")
+        player.assertSaid("§7- Cookpot recipes, sounds, colors, and head dishes are configurable")
         player.assertSaid("§8- Vein mining can be configured in config.yml")
         player.assertSaid("§bCookpot crafting recipe:")
         player.assertSaid("§7[ ] [A] [ ]")
@@ -71,6 +72,12 @@ class FarmingUtilsTest {
         player.assertSaid("§7- Honey Glazed Chicken: Cooked Chicken + Honey Bottle")
         player.assertSaid("§7- Hearty Stew: Cooked Beef + Carrot + Baked Potato + Bowl")
         player.assertSaid("§7- Berry Tart: 3 Sweet Berries + 2 Wheat + Sugar + Egg")
+        player.assertSaid("§7- Vanilla Cake: Milk Bucket + 2 Sugar + Egg + 3 Wheat")
+        player.assertSaid("§7- Cheese Burger: Cooked Beef + 2 Bread + Milk Bucket")
+        player.assertSaid("§7- Margherita Pizza: Bread + 2 Beetroot + Milk Bucket + Kelp")
+        player.assertSaid("§7- Strawberry Donut: 2 Wheat + Sugar + 2 Sweet Berries + Egg")
+        player.assertSaid("§7- Street Taco: Cooked Beef + Dried Kelp + Carrot + Wheat")
+        player.assertSaid("§7- Shrimp Sushi: Cooked Salmon + Dried Kelp + Wheat")
         player.assertSaid("§8- ...and 44 more in the Cookpot menu")
         player.assertSaid("§bHow to use the Cookpot:")
         player.assertSaid("§71. Craft the Cookpot using the recipe shown above.")
@@ -118,7 +125,7 @@ class FarmingUtilsTest {
             ),
             meta.lore,
         )
-        assertEquals("https://textures.minecraft.net/texture/1591b61529d25a7ecd6bec00948e6fe155e3007f2d7fe559f3a83c6f808e434d", meta.ownerProfile?.textures?.skin?.toString())
+        assertEquals("Cookpot", meta.ownerProfile?.name)
         assertTrue(CustomCraftingStation.hasCraftingStationMarker(meta, plugin))
     }
 
@@ -128,17 +135,23 @@ class FarmingUtilsTest {
         val foodManager = CustomFoodManager(plugin, settings.recipes, settings.sounds)
         val vanillaCake = foodManager.getRecipeById("vanilla_cake")!!.result
         val burger = foodManager.getRecipeById("cheese_burger")!!.result
+        val vanillaCakeDefinition = settings.recipes.first { it.id == "vanilla_cake" }
+        val burgerDefinition = settings.recipes.first { it.id == "cheese_burger" }
 
         assertEquals(Material.PLAYER_HEAD, vanillaCake.type)
         assertEquals(Material.PLAYER_HEAD, burger.type)
+        assertEquals("23188", vanillaCakeDefinition.headId)
         assertEquals(
             "https://textures.minecraft.net/texture/8588dd1f74385c9c84a1872b1eb209fe3808efd4cb78ea6330b505321cdb920e",
-            (vanillaCake.itemMeta as SkullMeta).ownerProfile?.textures?.skin?.toString(),
+            vanillaCakeDefinition.textureUrl,
         )
+        assertEquals("8970", burgerDefinition.headId)
         assertEquals(
             "https://textures.minecraft.net/texture/77d4341144c2c5eeb1a22a237d1a03946b4049750449d08cc74f5847edb50eb4",
-            (burger.itemMeta as SkullMeta).ownerProfile?.textures?.skin?.toString(),
+            burgerDefinition.textureUrl,
         )
+        assertEquals("VanillaCake", (vanillaCake.itemMeta as SkullMeta).ownerProfile?.name)
+        assertEquals("CheeseBurger", (burger.itemMeta as SkullMeta).ownerProfile?.name)
     }
 
     @Test

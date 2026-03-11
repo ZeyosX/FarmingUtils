@@ -20,7 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
-import java.net.URL
+import java.net.URI
 import java.util.UUID
 import java.util.WeakHashMap
 import kotlin.math.ceil
@@ -57,7 +57,7 @@ class CustomCraftingStation(
 
         meta.setDisplayName(settings.station.displayName)
         meta.lore = settings.station.lore
-        meta.setOwnerProfile(createProfile(settings.station.textureUrl))
+        meta.ownerProfile = createProfile(settings.station.textureUrl)
         markAsCraftingStation(meta.persistentDataContainer, plugin)
 
         item.itemMeta = meta
@@ -206,7 +206,7 @@ class CustomCraftingStation(
             "Cookpot",
         ).apply {
             val textures = textures
-            textures.skin = URL(textureUrl)
+            textures.skin = URI.create(textureUrl).toURL()
             setTextures(textures)
         }
     }

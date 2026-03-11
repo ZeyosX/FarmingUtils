@@ -12,11 +12,11 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
-import java.net.URL
+import java.net.URI
 import java.util.UUID
 
 class CustomFoodManager(
-    private val plugin: JavaPlugin,
+    plugin: JavaPlugin,
     definitions: List<RecipeDefinition>,
     private val sounds: CookpotSoundSettings,
 ) : Listener {
@@ -101,16 +101,14 @@ class CustomFoodManager(
     private fun applyHeadTexture(meta: ItemMeta, definition: RecipeDefinition) {
         val textureUrl = definition.textureUrl ?: return
         val skullMeta = meta as? SkullMeta ?: return
-        skullMeta.setOwnerProfile(
-            Bukkit.createPlayerProfile(
-                UUID.nameUUIDFromBytes(textureUrl.toByteArray()),
-                definition.customProfileName(),
-            ).apply {
-                val textures = textures
-                textures.skin = URL(textureUrl)
-                setTextures(textures)
-            },
-        )
+        skullMeta.ownerProfile = Bukkit.createPlayerProfile(
+            UUID.nameUUIDFromBytes(textureUrl.toByteArray()),
+            definition.customProfileName(),
+        ).apply {
+            val textures = textures
+            textures.skin = URI.create(textureUrl).toURL()
+            setTextures(textures)
+        }
     }
 
     private fun makeConsumable(meta: ItemMeta, foodPoints: Int, forceCustomFood: Boolean) {
@@ -119,15 +117,15 @@ class CustomFoodManager(
         }
 
         runCatching {
-            val food = meta.food
-            food.nutrition = foodPoints
-            food.saturation = foodPoints / 2f
-            meta.food = food
+            val food = meta.invokeNoArg("getFood") ?: return@runCatching
+            food.invokeSingleArg("setNutrition", foodPoints)
+            food.invokeSingleArg("setSaturation", foodPoints / 2f)
+            meta.invokeMatchingSingleArg("setFood", food)
 
-            val consumable = meta.consumable
-            consumable.consumeSeconds = 1.2f
-            consumable.sound = sounds.consumeBonus.sound
-            meta.consumable = consumable
+            val consumable = meta.invokeNoArg("getConsumable") ?: return@runCatching
+            consumable.invokeSingleArg("setConsumeSeconds", 1.2f)
+            consumable.invokeSingleArg("setSound", sounds.consumeBonus.sound)
+            meta.invokeMatchingSingleArg("setConsumable", consumable)
         }
     }
 
@@ -140,5 +138,45 @@ class CustomFoodManager(
             .replace(" ", "")
             .take(16)
             .ifBlank { "CookpotItem" }
+    }
+
+    private fun Any.invokeNoArg(methodName: String): Any? {
+        return javaClass.methods
+            .firstOrNull { it.name == methodName && it.parameterCount == 0 }
+            ?.invoke(this)
+    }
+
+    private fun Any.invokeSingleArg(methodName: String, value: Any) {
+        javaClass.methods
+            .firstOrNull { method ->
+                method.name == methodName &&
+                    method.parameterCount == 1 &&
+                    wrapPrimitive(method.parameterTypes[0]).isAssignableFrom(wrapPrimitive(value.javaClass))
+            }
+            ?.invoke(this, value)
+    }
+
+    private fun Any.invokeMatchingSingleArg(methodName: String, value: Any) {
+        javaClass.methods
+            .firstOrNull { method ->
+                method.name == methodName &&
+                    method.parameterCount == 1 &&
+                    method.parameterTypes[0].isInstance(value)
+            }
+            ?.invoke(this, value)
+    }
+
+    private fun wrapPrimitive(type: Class<*>): Class<*> {
+        return when (type) {
+            Integer.TYPE -> Integer::class.java
+            java.lang.Float.TYPE -> java.lang.Float::class.java
+            java.lang.Double.TYPE -> java.lang.Double::class.java
+            java.lang.Boolean.TYPE -> java.lang.Boolean::class.java
+            java.lang.Long.TYPE -> java.lang.Long::class.java
+            java.lang.Short.TYPE -> java.lang.Short::class.java
+            java.lang.Byte.TYPE -> java.lang.Byte::class.java
+            Character.TYPE -> Character::class.java
+            else -> type
+        }
     }
 }

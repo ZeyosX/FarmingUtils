@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 import org.bukkit.inventory.meta.Damageable
+import java.util.EnumMap
 
 object CropPlanter {
     private const val MAX_CONNECTED_FARMLANDS = 8192
@@ -96,7 +97,7 @@ object CropPlanter {
     }
 
     private fun countPlantableSeeds(inventory: PlayerInventory): MutableMap<Material, Int> {
-        val totals: MutableMap<Material, Int> = HashMap()
+        val totals: MutableMap<Material, Int> = EnumMap(Material::class.java)
         for (item in inventory.storageContents) {
             val stack = item ?: continue
             if (stack.type !in SEED_TO_CROP) {
