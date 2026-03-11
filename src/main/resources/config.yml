@@ -5,3 +5,695 @@ vein-mining:
   materials:
     - SUGAR_CANE
     - BAMBOO
+
+cookpot:
+  help-preview-limit: 12
+  station:
+    name: "&6&lCookpot"
+    lore:
+      - "&7A festive crafting station for hearty meals and sweets."
+      - "&eRight-click to browse the full cookpot menu."
+      - "&8Head ID: 35970"
+    head-id: "35970"
+    texture-url: "https://textures.minecraft.net/texture/1591b61529d25a7ecd6bec00948e6fe155e3007f2d7fe559f3a83c6f808e434d"
+    crafting-recipe:
+      shape:
+        - " A "
+        - "WSW"
+        - " W "
+      ingredients:
+        A: APPLE
+        W: WHEAT
+        S: SUGAR
+  sounds:
+    station-place:
+      sound: BLOCK_DECORATED_POT_PLACE
+      volume: 1.0
+      pitch: 1.15
+    menu-open:
+      sound: BLOCK_BARREL_OPEN
+      volume: 1.0
+      pitch: 1.2
+    craft-success:
+      sound: ENTITY_PLAYER_LEVELUP
+      volume: 0.9
+      pitch: 1.35
+    craft-failure:
+      sound: ENTITY_VILLAGER_NO
+      volume: 0.9
+      pitch: 0.95
+    consume-bonus:
+      sound: ENTITY_GENERIC_EAT
+      volume: 0.8
+      pitch: 1.2
+  recipes:
+    steak_and_chips:
+      name: "&6Steak and Chips"
+      material: COOKED_BEEF
+      food-points: 8
+      description:
+        - "&7Pan-seared beef served with fluffy baked chips."
+        - "&8A classic plate for hungry workers."
+      ingredients:
+        BEEF: 1
+        BAKED_POTATO: 1
+    msa7ab_italy_sandwich:
+      name: "&cMsa7ab Italy Sandwich"
+      material: COOKED_CHICKEN
+      food-points: 6
+      description:
+        - "&7A warm chicken sandwich layered inside fresh bread."
+        - "&8Fast, filling, and perfect on the move."
+      ingredients:
+        COOKED_CHICKEN: 1
+        BREAD: 1
+    farmer_salad:
+      name: "&aFarmer Salad"
+      material: BEETROOT_SOUP
+      food-points: 7
+      description:
+        - "&7Garden vegetables tossed into a cool fresh bowl."
+        - "&8Light to eat, but still satisfying."
+      ingredients:
+        BEETROOT: 2
+        CARROT: 1
+        BAKED_POTATO: 1
+    honey_glazed_chicken:
+      name: "&6Honey Glazed Chicken"
+      material: COOKED_CHICKEN
+      food-points: 8
+      description:
+        - "&7Roasted chicken brushed with sticky honey glaze."
+        - "&8Sweet, savory, and straight from the pan."
+      ingredients:
+        COOKED_CHICKEN: 1
+        HONEY_BOTTLE: 1
+    hearty_stew:
+      name: "&eHearty Stew"
+      material: RABBIT_STEW
+      food-points: 10
+      description:
+        - "&7A thick homestead stew packed with meat and roots."
+        - "&8Made for long shifts and late nights."
+      ingredients:
+        COOKED_BEEF: 1
+        CARROT: 1
+        BAKED_POTATO: 1
+        BOWL: 1
+    berry_tart:
+      name: "&dBerry Tart"
+      material: SWEET_BERRIES
+      food-points: 5
+      description:
+        - "&7A bright berry dessert with a crisp golden crust."
+        - "&8Small, sweet, and easy to share."
+      ingredients:
+        SWEET_BERRIES: 3
+        WHEAT: 2
+        SUGAR: 1
+        EGG: 1
+    vanilla_cake:
+      name: "&f&lVanilla Cake"
+      material: PLAYER_HEAD
+      food-points: 9
+      head-id: "23188"
+      texture-url: "https://textures.minecraft.net/texture/8588dd1f74385c9c84a1872b1eb209fe3808efd4cb78ea6330b505321cdb920e"
+      description:
+        - "&7A fluffy vanilla sponge finished with soft white icing."
+        - "&8Looks like it belongs in a bakery window."
+      ingredients:
+        MILK_BUCKET: 1
+        SUGAR: 2
+        EGG: 1
+        WHEAT: 3
+    cheese_burger:
+      name: "&6Cheese Burger"
+      material: PLAYER_HEAD
+      food-points: 9
+      head-id: "8970"
+      texture-url: "https://textures.minecraft.net/texture/77d4341144c2c5eeb1a22a237d1a03946b4049750449d08cc74f5847edb50eb4"
+      description:
+        - "&7A stacked burger with melted cheese and a toasted bun."
+        - "&8Messy in the best possible way."
+      ingredients:
+        COOKED_BEEF: 1
+        BREAD: 2
+        MILK_BUCKET: 1
+    margherita_pizza:
+      name: "&cMargherita Pizza"
+      material: PLAYER_HEAD
+      food-points: 9
+      head-id: "81230"
+      texture-url: "https://textures.minecraft.net/texture/5efc38581ec5b2d8ce3e6a0de234373810d6c59b61709bd0274936c003079784"
+      description:
+        - "&7A stone-baked pizza with rich sauce and melted cheese."
+        - "&8Simple toppings, huge flavor."
+      ingredients:
+        BREAD: 1
+        BEETROOT: 2
+        MILK_BUCKET: 1
+        KELP: 1
+    strawberry_donut:
+      name: "&dStrawberry Donut"
+      material: PLAYER_HEAD
+      food-points: 6
+      head-id: "45668"
+      texture-url: "https://textures.minecraft.net/texture/d08236b44f3fc11b002805484872c251e994abc37a1d5f1dbb76c811e767d1c7"
+      description:
+        - "&7A soft donut dipped in glossy berry icing."
+        - "&8The kind of snack that disappears quickly."
+      ingredients:
+        WHEAT: 2
+        SUGAR: 1
+        SWEET_BERRIES: 2
+        EGG: 1
+    street_taco:
+      name: "&6Street Taco"
+      material: PLAYER_HEAD
+      food-points: 7
+      head-id: "20769"
+      texture-url: "https://textures.minecraft.net/texture/549d3d889cff655c62283418455205b03ae77ffb7ee18dd03ac0a4ffb895615b"
+      description:
+        - "&7A folded taco packed with seasoned meat and fresh greens."
+        - "&8Built for quick bites with big flavor."
+      ingredients:
+        COOKED_BEEF: 1
+        DRIED_KELP: 1
+        CARROT: 1
+        WHEAT: 1
+    shrimp_sushi:
+      name: "&bShrimp Sushi"
+      material: PLAYER_HEAD
+      food-points: 7
+      head-id: "88523"
+      texture-url: "https://textures.minecraft.net/texture/ae9d22d9ada63e281420ae33691880869fa1a14bfdf87d8e538e998a8f29595b"
+      description:
+        - "&7Neat little sushi rolls wrapped with seaweed and shrimp."
+        - "&8Elegant enough for a fancy cookpot feast."
+      ingredients:
+        COOKED_SALMON: 1
+        DRIED_KELP: 1
+        WHEAT: 1
+    mac_and_cheese:
+      name: "&eMac and Cheese"
+      material: PLAYER_HEAD
+      food-points: 8
+      head-id: "88123"
+      texture-url: "https://textures.minecraft.net/texture/7b3bcd4445e1360623821a2879e497c3de25f899c94ffb9e5942e06b2ccaea65"
+      description:
+        - "&7Creamy pasta baked under a cheesy golden top."
+        - "&8Comfort food with no subtlety at all."
+      ingredients:
+        WHEAT: 2
+        MILK_BUCKET: 1
+        BAKED_POTATO: 1
+        BOWL: 1
+    butter_croissant:
+      name: "&6Butter Croissant"
+      material: PLAYER_HEAD
+      food-points: 6
+      head-id: "87329"
+      texture-url: "https://textures.minecraft.net/texture/2faaae94779138d0e144f4fbfa6295e9e43d5054fa6eb0a64421b546c88c5b48"
+      description:
+        - "&7A flaky pastry folded into delicate buttery layers."
+        - "&8Best enjoyed while still warm."
+      ingredients:
+        WHEAT: 3
+        MILK_BUCKET: 1
+        EGG: 1
+    vanilla_ice_cream:
+      name: "&fVanilla Ice Cream"
+      material: PLAYER_HEAD
+      food-points: 5
+      head-id: "51272"
+      texture-url: "https://textures.minecraft.net/texture/fdc8eb7d1b5c38b9e49027c73e3ee1ecad1837470b81b37d178db63c29ea250e"
+      description:
+        - "&7A chilled scoop of creamy vanilla sweetness."
+        - "&8Cold enough to make your teeth regret it."
+      ingredients:
+        MILK_BUCKET: 1
+        SUGAR: 1
+        SNOWBALL: 1
+    pancake_stack:
+      name: "&6Pancake Stack"
+      material: PLAYER_HEAD
+      food-points: 8
+      head-id: "89443"
+      texture-url: "https://textures.minecraft.net/texture/be3e473e963fac19e0cc852742094452e8ef8eeeac0a46aaf3a49ae3f22a5ec7"
+      description:
+        - "&7Tall pancakes drizzled with syrup and butter."
+        - "&8A breakfast stack with zero restraint."
+      ingredients:
+        WHEAT: 3
+        EGG: 1
+        HONEY_BOTTLE: 1
+        MILK_BUCKET: 1
+    apple_pie:
+      name: "&6Apple Pie"
+      material: PUMPKIN_PIE
+      food-points: 7
+      description:
+        - "&7Baked apples tucked into a buttery golden crust."
+        - "&8Smells like a village fair."
+      ingredients:
+        APPLE: 2
+        WHEAT: 2
+        SUGAR: 1
+        EGG: 1
+    pumpkin_soup:
+      name: "&ePumpkin Soup"
+      material: MUSHROOM_STEW
+      food-points: 7
+      description:
+        - "&7A velvety pumpkin soup with a sweet earthy finish."
+        - "&8Simple ingredients, surprisingly rich."
+      ingredients:
+        PUMPKIN: 1
+        BOWL: 1
+        MILK_BUCKET: 1
+    fisherman_platter:
+      name: "&3Fisherman's Platter"
+      material: COOKED_SALMON
+      food-points: 8
+      description:
+        - "&7A generous seafood plate for a long day on the water."
+        - "&8Fresh, smoky, and deeply satisfying."
+      ingredients:
+        COOKED_SALMON: 1
+        COOKED_COD: 1
+        BAKED_POTATO: 1
+    golden_breakfast:
+      name: "&6Golden Breakfast"
+      material: GOLDEN_CARROT
+      food-points: 8
+      description:
+        - "&7A bright breakfast plate with a polished village touch."
+        - "&8A fancy start to any survival morning."
+      ingredients:
+        GOLDEN_CARROT: 1
+        BREAD: 1
+        EGG: 1
+    honey_toast:
+      name: "&eHoney Toast"
+      material: BREAD
+      food-points: 6
+      description:
+        - "&7Toasted bread brushed with honey and caramel edges."
+        - "&8Quick comfort with a sweet finish."
+      ingredients:
+        BREAD: 1
+        HONEY_BOTTLE: 1
+    spicy_skewer:
+      name: "&cSpicy Skewer"
+      material: COOKED_CHICKEN
+      food-points: 7
+      description:
+        - "&7Fire-kissed chicken chunks threaded with vegetables."
+        - "&8Built for players who like heat."
+      ingredients:
+        COOKED_CHICKEN: 1
+        CARROT: 1
+        BEETROOT: 1
+    garden_wrap:
+      name: "&aGarden Wrap"
+      material: BREAD
+      food-points: 6
+      description:
+        - "&7A soft wrap filled with crisp greens and sweet roots."
+        - "&8Fresh enough to feel healthy."
+      ingredients:
+        BREAD: 1
+        CARROT: 1
+        BEETROOT: 1
+        SWEET_BERRIES: 1
+    loaded_baked_potato:
+      name: "&6Loaded Baked Potato"
+      material: BAKED_POTATO
+      food-points: 7
+      description:
+        - "&7A fluffy potato loaded with creamy and savory toppings."
+        - "&8More meal than side dish."
+      ingredients:
+        BAKED_POTATO: 1
+        MILK_BUCKET: 1
+        COOKED_BEEF: 1
+    beet_burger:
+      name: "&dBeet Burger"
+      material: BREAD
+      food-points: 7
+      description:
+        - "&7A vibrant veggie burger with a surprisingly hearty bite."
+        - "&8Colorful, messy, and actually good."
+      ingredients:
+        BEETROOT: 2
+        BREAD: 2
+        CARROT: 1
+    melon_sorbet:
+      name: "&bMelon Sorbet"
+      material: MELON_SLICE
+      food-points: 5
+      description:
+        - "&7A cold melon dessert blended into icy sweetness."
+        - "&8Clean, bright, and refreshing."
+      ingredients:
+        MELON_SLICE: 3
+        SUGAR: 1
+        SNOWBALL: 1
+    glazed_salmon:
+      name: "&dGlazed Salmon"
+      material: COOKED_SALMON
+      food-points: 8
+      description:
+        - "&7Salmon lacquered with a glossy sweet glaze."
+        - "&8Looks expensive, tastes better."
+      ingredients:
+        COOKED_SALMON: 1
+        HONEY_BOTTLE: 1
+    mushroom_risotto:
+      name: "&7Mushroom Risotto"
+      material: MUSHROOM_STEW
+      food-points: 8
+      description:
+        - "&7Creamy rice and mushrooms cooked slow and rich."
+        - "&8A bowl of quiet luxury."
+      ingredients:
+        BROWN_MUSHROOM: 1
+        RED_MUSHROOM: 1
+        WHEAT: 1
+        MILK_BUCKET: 1
+    omelette_deluxe:
+      name: "&eOmelette Deluxe"
+      material: COOKED_CHICKEN
+      food-points: 7
+      description:
+        - "&7A folded omelette stuffed with farm-fresh fillings."
+        - "&8Breakfast with a little swagger."
+      ingredients:
+        EGG: 2
+        COOKED_CHICKEN: 1
+        CARROT: 1
+    berry_smoothie:
+      name: "&dBerry Smoothie"
+      material: HONEY_BOTTLE
+      food-points: 5
+      description:
+        - "&7Sweet berries blended into a frosty crimson drink."
+        - "&8A quick energy boost in a bottle."
+      ingredients:
+        SWEET_BERRIES: 3
+        MILK_BUCKET: 1
+        SUGAR: 1
+    sweet_farmer_roll:
+      name: "&6Sweet Farmer Roll"
+      material: BREAD
+      food-points: 6
+      description:
+        - "&7A soft roll brushed with sugar and butter."
+        - "&8Bakery comfort with farmhouse charm."
+      ingredients:
+        WHEAT: 2
+        SUGAR: 1
+        MILK_BUCKET: 1
+    roasted_corn_bowl:
+      name: "&eRoasted Corn Bowl"
+      material: BEETROOT_SOUP
+      food-points: 6
+      description:
+        - "&7Sweet roasted kernels tossed into a warm bowl."
+        - "&8Simple food done right."
+      ingredients:
+        GOLDEN_CARROT: 2
+        BOWL: 1
+        MILK_BUCKET: 1
+    ginger_cookie:
+      name: "&6Ginger Cookie"
+      material: COOKIE
+      food-points: 4
+      description:
+        - "&7A spiced cookie with a warm snap at the finish."
+        - "&8Small, fragrant, and addictive."
+      ingredients:
+        COOKIE: 1
+        SUGAR: 1
+        HONEY_BOTTLE: 1
+    cocoa_biscuit:
+      name: "&8Cocoa Biscuit"
+      material: COOKIE
+      food-points: 4
+      description:
+        - "&7A dark biscuit with soft cocoa richness."
+        - "&8Best with milk and bad decisions."
+      ingredients:
+        COOKIE: 1
+        COCOA_BEANS: 2
+        SUGAR: 1
+    rabbit_pie:
+      name: "&6Rabbit Pie"
+      material: RABBIT_STEW
+      food-points: 9
+      description:
+        - "&7Tender rabbit baked beneath a flaky crust."
+        - "&8A proper village supper."
+      ingredients:
+        COOKED_RABBIT: 1
+        CARROT: 1
+        BAKED_POTATO: 1
+        WHEAT: 2
+    seaside_chowder:
+      name: "&3Seaside Chowder"
+      material: MUSHROOM_STEW
+      food-points: 8
+      description:
+        - "&7A creamy chowder filled with fish and sea flavor."
+        - "&8Thick enough to count as a meal."
+      ingredients:
+        COOKED_COD: 1
+        KELP: 1
+        MILK_BUCKET: 1
+        BOWL: 1
+    harvest_pasta:
+      name: "&6Harvest Pasta"
+      material: BREAD
+      food-points: 8
+      description:
+        - "&7Golden noodles tossed with farm vegetables."
+        - "&8The cookpot version of comfort."
+      ingredients:
+        WHEAT: 3
+        CARROT: 1
+        BEETROOT: 1
+        MILK_BUCKET: 1
+    veggie_noodles:
+      name: "&aVeggie Noodles"
+      material: BREAD
+      food-points: 7
+      description:
+        - "&7A lighter noodle bowl packed with crisp produce."
+        - "&8Fresh, fast, and full of color."
+      ingredients:
+        WHEAT: 2
+        CARROT: 1
+        BEETROOT: 1
+        MELON_SLICE: 1
+    caramel_apple:
+      name: "&6Caramel Apple"
+      material: APPLE
+      food-points: 5
+      description:
+        - "&7A shiny apple dipped in sticky caramel."
+        - "&8Sweet enough to count as dessert."
+      ingredients:
+        APPLE: 1
+        SUGAR: 2
+        HONEY_BOTTLE: 1
+    fruit_medley:
+      name: "&dFruit Medley"
+      material: GLOW_BERRIES
+      food-points: 5
+      description:
+        - "&7A mixed bowl of bright fruit and berry flavors."
+        - "&8Light, juicy, and easy to snack on."
+      ingredients:
+        MELON_SLICE: 2
+        SWEET_BERRIES: 2
+        APPLE: 1
+    stuffed_pumpkin:
+      name: "&6Stuffed Pumpkin"
+      material: PUMPKIN_PIE
+      food-points: 8
+      description:
+        - "&7Roasted pumpkin filled with savory hearty stuffing."
+        - "&8An autumn feast in one dish."
+      ingredients:
+        PUMPKIN: 1
+        COOKED_BEEF: 1
+        BREAD: 1
+        CARROT: 1
+    bamboo_rice:
+      name: "&aBamboo Rice"
+      material: DRIED_KELP
+      food-points: 6
+      description:
+        - "&7Steamed rice with a clean herbal bamboo aroma."
+        - "&8Minimalist food that still feels special."
+      ingredients:
+        WHEAT: 1
+        BAMBOO: 1
+        DRIED_KELP: 1
+    chicken_alfredo:
+      name: "&fChicken Alfredo"
+      material: COOKED_CHICKEN
+      food-points: 9
+      description:
+        - "&7Creamy noodles folded around slices of chicken."
+        - "&8Rich enough to slow you down."
+      ingredients:
+        COOKED_CHICKEN: 1
+        WHEAT: 3
+        MILK_BUCKET: 1
+        BOWL: 1
+    smoky_bbq_plate:
+      name: "&cSmoky BBQ Plate"
+      material: COOKED_PORKCHOP
+      food-points: 9
+      description:
+        - "&7A barbecue platter with deep smoke and sticky glaze."
+        - "&8Heavy, loud, and completely unapologetic."
+      ingredients:
+        COOKED_PORKCHOP: 1
+        HONEY_BOTTLE: 1
+        BAKED_POTATO: 1
+    miners_lunchbox:
+      name: "&8Miner's Lunchbox"
+      material: BREAD
+      food-points: 8
+      description:
+        - "&7A sturdy packed meal for long underground runs."
+        - "&8Built to keep hunger off your back."
+      ingredients:
+        BREAD: 2
+        COOKED_BEEF: 1
+        APPLE: 1
+    sunrise_parfait:
+      name: "&eSunrise Parfait"
+      material: GLOW_BERRIES
+      food-points: 5
+      description:
+        - "&7Creamy layers of fruit and sweetness in a bright cup."
+        - "&8Looks fancy, eats easy."
+      ingredients:
+        SWEET_BERRIES: 2
+        GLOW_BERRIES: 1
+        MILK_BUCKET: 1
+    honeyed_porridge:
+      name: "&eHoneyed Porridge"
+      material: MUSHROOM_STEW
+      food-points: 6
+      description:
+        - "&7Warm grain porridge stirred with mellow honey."
+        - "&8A slow morning in bowl form."
+      ingredients:
+        WHEAT: 2
+        HONEY_BOTTLE: 1
+        BOWL: 1
+    sugar_glazed_berries:
+      name: "&dSugar Glazed Berries"
+      material: SWEET_BERRIES
+      food-points: 4
+      description:
+        - "&7Fresh berries coated in a sparkling sugar finish."
+        - "&8Tiny sweets with a sharp pop."
+      ingredients:
+        SWEET_BERRIES: 3
+        SUGAR: 1
+    campfire_sausage:
+      name: "&6Campfire Sausage"
+      material: COOKED_PORKCHOP
+      food-points: 7
+      description:
+        - "&7A smoky pork sausage roasted over open flame."
+        - "&8Simple camp food, done properly."
+      ingredients:
+        COOKED_PORKCHOP: 1
+        STICK: 1
+        HONEY_BOTTLE: 1
+    baked_cod_supreme:
+      name: "&bBaked Cod Supreme"
+      material: COOKED_COD
+      food-points: 8
+      description:
+        - "&7Tender cod baked with herbs and golden edges."
+        - "&8A refined answer to survival fishing."
+      ingredients:
+        COOKED_COD: 1
+        BAKED_POTATO: 1
+        DRIED_KELP: 1
+    carrot_cake:
+      name: "&6Carrot Cake"
+      material: PUMPKIN_PIE
+      food-points: 7
+      description:
+        - "&7A moist cake packed with sweet grated carrot."
+        - "&8Dessert pretending to be responsible."
+      ingredients:
+        CARROT: 2
+        WHEAT: 2
+        SUGAR: 1
+        EGG: 1
+    beetroot_carpaccio:
+      name: "&dBeetroot Carpaccio"
+      material: BEETROOT
+      food-points: 5
+      description:
+        - "&7Thin beet slices plated with a sharp farm finish."
+        - "&8Unexpectedly elegant for a root vegetable."
+      ingredients:
+        BEETROOT: 3
+        HONEY_BOTTLE: 1
+    orchard_salad:
+      name: "&aOrchard Salad"
+      material: APPLE
+      food-points: 5
+      description:
+        - "&7A crisp salad of apple, melon, and berry sweetness."
+        - "&8Fresh enough to reset your palate."
+      ingredients:
+        APPLE: 1
+        MELON_SLICE: 2
+        SWEET_BERRIES: 1
+    nectar_tart:
+      name: "&dNectar Tart"
+      material: PUMPKIN_PIE
+      food-points: 6
+      description:
+        - "&7A glossy tart with fruit nectar baked into the filling."
+        - "&8Sweet but bright, never heavy."
+      ingredients:
+        GLOW_BERRIES: 2
+        WHEAT: 2
+        SUGAR: 1
+        EGG: 1
+    village_paella:
+      name: "&6Village Paella"
+      material: COOKED_COD
+      food-points: 9
+      description:
+        - "&7A festive rice pan loaded with meat, fish, and color."
+        - "&8Made for sharing around the square."
+      ingredients:
+        WHEAT: 1
+        COOKED_CHICKEN: 1
+        COOKED_COD: 1
+        CARROT: 1
+    spiced_mutton_wrap:
+      name: "&cSpiced Mutton Wrap"
+      material: BREAD
+      food-points: 8
+      description:
+        - "&7Warm flatbread wrapped around seasoned mutton strips."
+        - "&8Bold flavor with a portable finish."
+      ingredients:
+        COOKED_MUTTON: 1
+        BREAD: 1
+        CARROT: 1
+        BEETROOT: 1

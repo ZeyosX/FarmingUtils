@@ -8,33 +8,55 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.PlayerInventory
 import kotlin.math.min
 
-class CustomCraftingListener(private val customFoodManager: CustomFoodManager) : Listener {
+class CustomCraftingListener(
+    private val customFoodManager: CustomFoodManager,
+    private val craftingStation: CustomCraftingStation,
+    private val sounds: CookpotSoundSettings,
+) : Listener {
     @EventHandler(ignoreCancelled = true)
     fun onInventoryClick(event: InventoryClickEvent) {
         val player = event.whoClicked as? Player ?: return
-        if (event.view.title != CustomCraftingStation.CRAFTING_MENU_TITLE) {
+        if (!CustomCraftingStation.isCraftingMenu(event.view.title)) {
             return
         }
 
         event.isCancelled = true
         val clickedItem = event.currentItem ?: return
+        val displayName = clickedItem.itemMeta?.displayName
+        if (displayName?.startsWith("§6Page ") == true) {
+            return
+        }
+        when (displayName) {
+            "§ePrevious Page" -> {
+                sounds.menuOpen.play(player)
+                craftingStation.openCraftingMenu(player, CustomCraftingStation.currentPageFromTitle(event.view.title) - 1)
+                return
+            }
+            "§aNext Page" -> {
+                sounds.menuOpen.play(player)
+                craftingStation.openCraftingMenu(player, CustomCraftingStation.currentPageFromTitle(event.view.title) + 1)
+                return
+            }
+        }
         val recipe = customFoodManager.getRecipeByItem(clickedItem) ?: return
         if (!hasIngredients(player.inventory, recipe.ingredients)) {
-            player.sendMessage("You do not have the required ingredients.")
+            sounds.craftFailure.play(player)
+            player.sendMessage("§cYou do not have the required ingredients for ${recipe.customName}.")
             return
         }
 
         removeIngredients(player.inventory, recipe.ingredients)
         player.inventory.addItem(recipe.result.clone())
-        player.sendMessage("You crafted ${recipe.customName}!")
+        sounds.craftSuccess.play(player)
+        player.sendMessage("§aYou crafted ${recipe.displayName}§a!")
     }
 
-    private fun hasIngredients(inventory: PlayerInventory, requirements: Map<Material, Int>): Boolean {
+    private fun hasIngredients(inventory: PlayerInventory, requirements: List<RecipeIngredient>): Boolean {
         if (requirements.isEmpty()) {
             return true
         }
 
-        val remaining: MutableMap<Material, Int> = requirements.toMutableMap()
+        val remaining = aggregateRequirements(requirements)
         for (item in inventory.storageContents) {
             val stack = item ?: continue
             val needed = remaining[stack.type] ?: continue
@@ -53,8 +75,8 @@ class CustomCraftingListener(private val customFoodManager: CustomFoodManager) :
         return remaining.isEmpty()
     }
 
-    private fun removeIngredients(inventory: PlayerInventory, requirements: Map<Material, Int>) {
-        val remaining: MutableMap<Material, Int> = requirements.toMutableMap()
+    private fun removeIngredients(inventory: PlayerInventory, requirements: List<RecipeIngredient>) {
+        val remaining = aggregateRequirements(requirements)
         val contents = inventory.storageContents
 
         for (slot in contents.indices) {
@@ -87,5 +109,13 @@ class CustomCraftingListener(private val customFoodManager: CustomFoodManager) :
         }
 
         inventory.storageContents = contents
+    }
+
+    private fun aggregateRequirements(requirements: List<RecipeIngredient>): MutableMap<Material, Int> {
+        val remaining = linkedMapOf<Material, Int>()
+        requirements.forEach { ingredient ->
+            remaining[ingredient.material] = (remaining[ingredient.material] ?: 0) + ingredient.amount
+        }
+        return remaining
     }
 }

@@ -20,11 +20,16 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
+import java.net.URL
+import java.util.UUID
 import java.util.WeakHashMap
+import kotlin.math.ceil
+import kotlin.math.min
 
 class CustomCraftingStation(
     private val plugin: JavaPlugin,
     private val customFoodManager: CustomFoodManager,
+    private val settings: CookpotSettings,
 ) : Listener {
     init {
         addCustomBlockRecipe()
@@ -37,10 +42,11 @@ class CustomCraftingStation(
         }
 
         val recipe = ShapedRecipe(recipeKey, createCraftingStationBlock())
-            .shape(" A ", "WSW", " W ")
-            .setIngredient('A', Material.APPLE)
-            .setIngredient('W', Material.WHEAT)
-            .setIngredient('S', Material.SUGAR)
+            .shape(*settings.station.recipeShape.toTypedArray())
+
+        settings.station.recipeIngredients.forEach { (symbol, material) ->
+            recipe.setIngredient(symbol, material)
+        }
 
         Bukkit.addRecipe(recipe)
     }
@@ -49,8 +55,9 @@ class CustomCraftingStation(
         val item = ItemStack(Material.PLAYER_HEAD)
         val meta = item.itemMeta as? SkullMeta ?: return item
 
-        meta.setDisplayName("Cookpot")
-        meta.lore = listOf("Head ID: 1668", "Custom Crafting Station")
+        meta.setDisplayName(settings.station.displayName)
+        meta.lore = settings.station.lore
+        meta.setOwnerProfile(createProfile(settings.station.textureUrl))
         markAsCraftingStation(meta.persistentDataContainer, plugin)
 
         item.itemMeta = meta
@@ -81,20 +88,34 @@ class CustomCraftingStation(
         }
 
         event.isCancelled = true
-        openCraftingMenu(event.player)
+        settings.sounds.menuOpen.play(event.player)
+        openCraftingMenu(event.player, 0)
     }
 
-    private fun openCraftingMenu(player: Player) {
-        player.openInventory(createCraftingInventory())
+    fun openCraftingMenu(player: Player, page: Int) {
+        player.openInventory(createCraftingInventory(page))
     }
 
-    private fun createCraftingInventory(): Inventory {
+    private fun createCraftingInventory(page: Int): Inventory {
         val recipes = customFoodManager.getRecipes()
-        val inventorySize = ((recipes.size + 8) / 9).coerceAtLeast(1) * 9
-        val inventory = Bukkit.createInventory(null, inventorySize, CRAFTING_MENU_TITLE)
+        val totalPages = totalPages(recipes.size)
+        val currentPage = page.coerceIn(0, totalPages - 1)
+        val inventory = Bukkit.createInventory(null, MENU_SIZE, menuTitle(currentPage, totalPages))
+        val startIndex = currentPage * RECIPES_PER_PAGE
+        val endIndex = min(startIndex + RECIPES_PER_PAGE, recipes.size)
 
-        recipes.forEachIndexed { index, recipe ->
+        recipes.subList(startIndex, endIndex).forEachIndexed { index, recipe ->
             inventory.setItem(index, createMenuItem(recipe))
+        }
+
+        if (totalPages > 1) {
+            if (currentPage > 0) {
+                inventory.setItem(PREVIOUS_PAGE_SLOT, navigationItem("§ePrevious Page"))
+            }
+            inventory.setItem(PAGE_INFO_SLOT, navigationItem("§6Page ${currentPage + 1}/$totalPages"))
+            if (currentPage < totalPages - 1) {
+                inventory.setItem(NEXT_PAGE_SLOT, navigationItem("§aNext Page"))
+            }
         }
 
         return inventory
@@ -104,28 +125,27 @@ class CustomCraftingStation(
         val item = recipe.result.clone()
         val meta = item.itemMeta ?: return item
         meta.lore = buildList {
+            addAll(recipe.description)
+            add("")
             add("${INFO_PREFIX}Ingredients:")
-            recipe.ingredients.entries
-                .sortedBy { it.key.name }
-                .forEach { (material, amount) ->
-                    add("${INFO_PREFIX}- ${formatMaterialName(material)} x$amount")
-                }
-            add("${INFO_PREFIX}Restores ${recipe.foodPoints} hunger")
-            add("${INFO_PREFIX}Click to craft")
+            recipe.ingredients.forEach { ingredient ->
+                add("${INFO_PREFIX}- ${formatMaterialName(ingredient.material)} x${ingredient.amount}")
+            }
+            add("")
+            add("§6Restores §e${recipe.foodPoints} hunger")
+            add("§aClick to craft")
         }
         item.itemMeta = meta
         return item
     }
 
-    private fun formatMaterialName(material: Material): String {
-        return material.name
-            .lowercase()
-            .split('_')
-            .joinToString(" ") { it.replaceFirstChar(Char::uppercaseChar) }
-    }
-
     companion object {
         const val CRAFTING_MENU_TITLE: String = "Custom Crafting"
+        const val MENU_SIZE: Int = 54
+        const val RECIPES_PER_PAGE: Int = 45
+        const val PREVIOUS_PAGE_SLOT: Int = 45
+        const val PAGE_INFO_SLOT: Int = 49
+        const val NEXT_PAGE_SLOT: Int = 53
 
         private const val STATION_MARKER_KEY = "custom_crafting_station_key"
         private const val STATION_MARKER_VALUE = "unique_id_1234"
@@ -154,6 +174,40 @@ class CustomCraftingStation(
 
         private fun stationKey(plugin: Plugin): NamespacedKey {
             return KEY_CACHE.getOrPut(plugin) { NamespacedKey(plugin, STATION_MARKER_KEY) }
+        }
+
+        fun isCraftingMenu(title: String): Boolean {
+            return title.startsWith(CRAFTING_MENU_TITLE)
+        }
+
+        fun currentPageFromTitle(title: String): Int {
+            val pageToken = Regex("""\((\d+)/(\d+)\)$""").find(title)?.groupValues?.getOrNull(1)
+            return (pageToken?.toIntOrNull() ?: 1) - 1
+        }
+
+        private fun totalPages(recipeCount: Int): Int {
+            return ceil(recipeCount / RECIPES_PER_PAGE.toDouble()).toInt().coerceAtLeast(1)
+        }
+
+        private fun menuTitle(page: Int, totalPages: Int): String {
+            return "$CRAFTING_MENU_TITLE (${page + 1}/$totalPages)"
+        }
+
+        private fun navigationItem(name: String): ItemStack {
+            val item = ItemStack(Material.ARROW)
+            val meta = item.itemMeta ?: return item
+            meta.setDisplayName(name)
+            item.itemMeta = meta
+            return item
+        }
+
+        private fun createProfile(textureUrl: String) = Bukkit.createPlayerProfile(
+            UUID.nameUUIDFromBytes(textureUrl.toByteArray()),
+            "Cookpot",
+        ).apply {
+            val textures = textures
+            textures.skin = URL(textureUrl)
+            setTextures(textures)
         }
     }
 }
